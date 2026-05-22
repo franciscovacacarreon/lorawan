@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  node-red:
+    image: nodered/node-red:latest
+    container_name: mynodered
+    restart: unless-stopped
+
+    ports:
+      - "1880:1880"
+
+    volumes:
+      - node_red_data:/data
+
+    environment:
+      - TZ=America/La_Paz
+
+volumes:
+  node_red_data:
