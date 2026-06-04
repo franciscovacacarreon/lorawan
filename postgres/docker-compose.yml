@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: timescale/timescaledb:latest-pg17
+    container_name: lorawan-postgres
+    restart: unless-stopped
+
+    environment:
+      TZ: America/La_Paz
+
+      POSTGRES_DB: lorawan
+      POSTGRES_USER: lorawan_user
+      POSTGRES_PASSWORD: PasswordSegura123
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lorawan_user -d lorawan"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+    command:
+      - postgres
+      - -c
+      - shared_preload_libraries=timescaledb
+
+volumes:
+  postgres_data:
